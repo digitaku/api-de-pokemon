@@ -7,8 +7,8 @@ namespace api_de_pokemon.Repositories
     {
         IEnumerable<Types> GetPokemons();
         Types GetPokemonByName(string name);
-        void InsertPokemon(Types pokemon);
-        void EditPokemon(Types pokemon);
-        void DeletePokemon(Types name);
+        void InsertPokemon(Types types);
+        void EditPokemon(Types types);
+        void DeletePokemon(Types types);
     }
 }
