@@ -9,6 +9,6 @@ namespace api_de_pokemon.Services
         Abilities GetAbilitiesByName(string name);
         void InsertAbilities(Abilities abilities);
         void EditAbilities(Abilities abilities);
-        void DeleteAbilities(Abilities abilities);
+        void DeleteAbilities(string name);
     }
 }

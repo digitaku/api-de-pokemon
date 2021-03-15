@@ -11,6 +11,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using api_de_pokemon.Context;
 using Microsoft.EntityFrameworkCore;
+using api_de_pokemon.Repositories;
+using api_de_pokemon.Repositories.Implementation;
+using api_de_pokemon.Services;
+using api_de_pokemon.Services.Implementation;
 
 namespace api_de_pokemon
 {
@@ -29,6 +33,8 @@ namespace api_de_pokemon
             services.AddDbContext<ContextDb>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConn")));
             services.AddControllers();
+            services.AddTransient<ITypesRepository, TypesRepository>();
+            services.AddTransient<ITypesServices, TypesServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
