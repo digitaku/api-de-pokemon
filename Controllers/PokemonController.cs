@@ -11,5 +11,16 @@ namespace api_de_pokemon.Controllers
     [ApiController]
     public class PokemonController : ControllerBase
     {
+        [HttpGet]
+        public string GetAll()
+        {
+            return "pikachu";
+        }
+
+        [HttpGet("{nome}")]
+        public string GetOne(string nome)
+        {
+            return $"toma ai teu {nome}";
+        }
     }
 }

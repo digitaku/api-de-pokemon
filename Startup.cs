@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api_de_pokemon.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_de_pokemon
 {
@@ -24,6 +26,8 @@ namespace api_de_pokemon
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ContextDb>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConn")));
             services.AddControllers();
         }
 
