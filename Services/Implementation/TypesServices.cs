@@ -29,43 +29,36 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException("Type require a name.");
             }
-            Types typeExist = _repository.GetTypesByName(name);
-            if (typeExist == null)
+            if (!_repository.TypeExist(name))
             {
                 throw new NotFoundException($"Type with name {name} not found.");
             }
             try
             {
-                _repository.DeleteTypes(typeExist);
+                _repository.DeleteTypes(_repository.GetTypesByName(name));
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex);
                 throw new BusinessException(ex.Message);
             }
         }
 
-        public void EditTypes(Types types)
+        public void EditTypes(Types types, string name)
         {
-            if (types == null || types.Name == null)
+            if (types == null || types.Name == null || name == null)
             {
                 throw new BadRequestException("Type require a name.");
             }
-            Types typeExist = _repository.GetTypesByName(types.Name);
-            if (typeExist == null)
+            if (!_repository.TypeExist(name))
             {
-                throw new NotFoundException($"Type with name {types.Name} not found.");
-
+                throw new NotFoundException($"Type with name {name} not found.");
             }
             try
             {
-                typeExist.Name = types.Name;
-                typeExist.Color = types.Color;
-                _repository.DeleteTypes(typeExist);
+                _repository.EditTypes(types, name);
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex);
                 throw new BusinessException(ex.Message);
 
             }
@@ -77,8 +70,7 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException("Type require a name.");
             }
-            Types typeExist = _repository.GetTypesByName(types.Name);
-            if (typeExist != null)
+            if (_repository.TypeExist(types.Name))
             {
                 throw new AlreadyExistException($"Type with name {types.Name} already exist.");
             }
@@ -88,9 +80,7 @@ namespace api_de_pokemon.Services.Implementation
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex);
                 throw new BusinessException(ex.Message);
-
             }
         }
     }

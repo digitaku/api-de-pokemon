@@ -7,8 +7,9 @@ namespace api_de_pokemon.Repositories
     {
         IEnumerable<Types> GetTypes();
         Types GetTypesByName(string name);
+        bool TypeExist(string name);
         void InsertTypes(Types types);
-        void EditTypes(Types types);
+        void EditTypes(Types types, string name);
         void DeleteTypes(Types types);
     }
 }

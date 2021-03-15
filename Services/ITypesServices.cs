@@ -8,7 +8,7 @@ namespace api_de_pokemon.Services
         IEnumerable<Types> GetTypes();
         Types GetTypesByName(string name);
         void InsertTypes(Types types);
-        void EditTypes(Types types);
+        void EditTypes(Types types, string name);
         void DeleteTypes(string name);
     }
 }

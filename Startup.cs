@@ -34,7 +34,11 @@ namespace api_de_pokemon
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConn")));
             services.AddControllers();
             services.AddTransient<ITypesRepository, TypesRepository>();
+            services.AddTransient<IAbilitiesRepository, AbilitiesRepository>();
+            services.AddTransient<IPokemonRepository, PokemonRepository>();
             services.AddTransient<ITypesServices, TypesServices>();
+            services.AddTransient<IAbilitiesServices, AbilitiesServices>();
+            services.AddTransient<IPokemonServices, PokemonServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

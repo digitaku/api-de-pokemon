@@ -1,4 +1,5 @@
 using api_de_pokemon.Entities;
+using api_de_pokemon.Exceptions;
 using api_de_pokemon.Services;
 using api_de_pokemon.Services.Implementation;
 using Microsoft.AspNetCore.Http;
@@ -28,9 +29,21 @@ namespace api_de_pokemon.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
+        }
+        [HttpGet("{name}")]
+        public IActionResult GetTypeByName(string name)
+        {
+            try
+            {
+                return Ok(_services.GetTypesByName(name));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
         [HttpPost]
         public IActionResult CreateType([FromBody] Types type)
@@ -38,11 +51,61 @@ namespace api_de_pokemon.Controllers
             try
             {
                 _services.InsertTypes(type);
+                return Created("Success", type);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (AlreadyExistException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (BusinessException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut("{name}")]
+        public IActionResult EditType([FromBody] Types type, string name)
+        {
+            try
+            {
+                _services.EditTypes(type, name);
                 return Ok(type);
             }
-            catch (Exception ex)
+            catch (BadRequestException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                return BadRequest(ex.Message);
+            }
+            catch (BusinessException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        [HttpDelete("{name}")]
+        public IActionResult DeleteType(string name)
+        {
+            try
+            {
+                _services.DeleteTypes(name);
+                return NoContent();
+            }
+            catch (BusinessException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
         }
     }

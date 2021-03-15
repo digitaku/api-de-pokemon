@@ -35,11 +35,13 @@ namespace api_de_pokemon.Repositories.Implementation
                 throw ex;
             }
         }
-        public void EditTypes(Types type)
+        public void EditTypes(Types type, string name)
         {
             try
             {
-                _context.Types.Update(type);
+                var typeForUpadate = _context.Types.Where(type => type.Name == name).FirstOrDefault();
+                typeForUpadate.Name = type.Name;
+                typeForUpadate.Color = type.Color;
                 _context.SaveChanges();
             }
             catch (Exception ex)
@@ -61,6 +63,11 @@ namespace api_de_pokemon.Repositories.Implementation
                 Console.WriteLine(ex);
                 throw ex;
             }
+        }
+
+        public bool TypeExist(string name)
+        {
+            return _context.Types.Where(type => type.Name == name).FirstOrDefault() != null;
         }
     }
 }
