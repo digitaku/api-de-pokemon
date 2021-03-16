@@ -40,6 +40,10 @@ namespace api_de_pokemon.Controllers
             {
                 return Ok(_services.GetTypesByName(name));
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

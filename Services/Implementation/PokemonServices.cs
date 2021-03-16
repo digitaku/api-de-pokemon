@@ -17,7 +17,12 @@ namespace api_de_pokemon.Services.Implementation
 
         public Pokemon GetPokemonByName(string name)
         {
-            return _repository.GetPokemonByName(name);
+            var pokemon = _repository.GetPokemonByName(name);
+            if (pokemon == null)
+            {
+                throw new NotFoundException($"Pokemon with name {name} not found.");
+            }
+            return pokemon;
         }
 
         public IEnumerable<Pokemon> GetPokemons()
@@ -27,12 +32,22 @@ namespace api_de_pokemon.Services.Implementation
 
         public IEnumerable<Pokemon> GetPokemonsByAbilities(string name)
         {
-            return _repository.GetPokemonsByAbilities(name);
+            var pokemon = _repository.GetPokemonsByAbilities(name);
+            if (pokemon == null)
+            {
+                throw new NotFoundException($"Pokemon with name {name} not found.");
+            }
+            return pokemon;
         }
 
         public IEnumerable<Pokemon> GetPokemonsByTypes(string name)
         {
-            return _repository.GetPokemonsByTypes(name);
+            var pokemon = _repository.GetPokemonsByTypes(name);
+            if (pokemon == null)
+            {
+                throw new NotFoundException($"Pokemon with name {name} not found.");
+            }
+            return pokemon;
         }
 
         public void DeletePokemon(string name)
@@ -41,14 +56,13 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException($"Pokemon require a name.");
             }
-            Pokemon pokemonExist = _repository.GetPokemonByName(name);
-            if (pokemonExist == null)
+            if (!_repository.PokemonExist(name))
             {
                 throw new NotFoundException($"Pokemon with name {name} not found.");
             }
             try
             {
-                _repository.DeletePokemon(pokemonExist);
+                _repository.DeletePokemon(_repository.GetPokemonByName(name));
             }
             catch (Exception ex)
             {
@@ -56,27 +70,19 @@ namespace api_de_pokemon.Services.Implementation
             }
         }
 
-        public void EditPokemon(Pokemon pokemon)
+        public void EditPokemon(Pokemon pokemon, string name)
         {
-            if (pokemon == null || pokemon.Name == null || pokemon.Alias == null || pokemon.ImageUrl == null)
+            if (pokemon == null || pokemon.Name == null || pokemon.Alias == null || pokemon.ImageUrl == null || name == null)
             {
                 throw new BadRequestException($"Pokemon require a name, alias and imageUrl.");
             }
-            Pokemon pokemonExist = _repository.GetPokemonByName(pokemon.Name);
-            if (pokemonExist == null)
+            if (!_repository.PokemonExist(name))
             {
                 throw new NotFoundException($"Pokemon with name {pokemon.Name} not found.");
             }
             try
             {
-                pokemonExist.Name = pokemon.Name;
-                pokemonExist.Alias = pokemon.Alias;
-                pokemonExist.Description = pokemon.Description;
-                pokemonExist.ImageUrl = pokemon.ImageUrl;
-                pokemonExist.Color = pokemon.Color;
-                pokemonExist.Height = pokemon.Height;
-                pokemonExist.Weight = pokemon.Weight;
-                _repository.EditPokemon(pokemonExist);
+                _repository.EditPokemon(pokemon, name);
             }
             catch (Exception ex)
             {
@@ -90,8 +96,7 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException($"Pokemon require a name, alias and imageUrl.");
             }
-            Pokemon pokemonExist = _repository.GetPokemonByName(pokemon.Name);
-            if (pokemonExist != null)
+            if (_repository.PokemonExist(pokemon.Name))
             {
                 throw new AlreadyExistException($"Pokemon with name {pokemon.Name} already exist.");
             }

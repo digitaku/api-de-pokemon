@@ -16,7 +16,12 @@ namespace api_de_pokemon.Services.Implementation
         }
         public Types GetTypesByName(string name)
         {
-            return _repository.GetTypesByName(name);
+            var type = _repository.GetTypesByName(name);
+            if (type == null)
+            {
+                throw new NotFoundException($"Type with name {name} not found.");
+            }
+            return type;
         }
 
         public IEnumerable<Types> GetTypes()

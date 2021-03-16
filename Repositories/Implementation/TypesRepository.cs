@@ -67,7 +67,7 @@ namespace api_de_pokemon.Repositories.Implementation
 
         public bool TypeExist(string name)
         {
-            return _context.Types.Where(type => type.Name == name).FirstOrDefault() != null;
+            return _context.Types.Where(type => type.Name == name).AsNoTracking().FirstOrDefault() != null;
         }
     }
 }

@@ -63,11 +63,19 @@ namespace api_de_pokemon.Repositories.Implementation
             }
         }
 
-        public void EditPokemon(Pokemon pokemon)
+        public void EditPokemon(Pokemon pokemon, string name)
         {
             try
             {
-                _db.Pokemons.Update(pokemon);
+                var pokemonUpdate = _db.Pokemons.Where(pokemon => pokemon.Name == name).FirstOrDefault();
+                pokemonUpdate.Name = pokemon.Name;
+                pokemonUpdate.Alias = pokemon.Alias;
+                pokemonUpdate.Color = pokemon.Color;
+                pokemonUpdate.Description = pokemon.Description;
+                pokemonUpdate.Height = pokemon.Height;
+                pokemonUpdate.ImageUrl = pokemon.ImageUrl;
+                pokemonUpdate.Weight = pokemon.Weight;
+                pokemonUpdate.Abilities = pokemon.Abilities;
                 _db.SaveChanges();
             }
             catch (Exception ex)
@@ -89,6 +97,11 @@ namespace api_de_pokemon.Repositories.Implementation
                 Console.WriteLine(ex);
                 throw ex;
             }
+        }
+
+        public bool PokemonExist(string name)
+        {
+            return _db.Pokemons.Where(pokemon => pokemon.Name == name).AsNoTracking().FirstOrDefault() != null;
         }
     }
 }

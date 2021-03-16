@@ -20,14 +20,13 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException("Ability require a name.");
             }
-            Abilities abilityExist = _repository.GetAbilitiesByName(name);
-            if (abilityExist == null)
+            if (!_repository.AbilityExist(name))
             {
                 throw new NotFoundException($"Ability with name {name} not found.");
             }
             try
             {
-                _repository.DeleteAbilities(abilityExist);
+                _repository.DeleteAbilities(_repository.GetAbilitiesByName(name));
             }
             catch (Exception ex)
             {
@@ -36,30 +35,23 @@ namespace api_de_pokemon.Services.Implementation
             }
         }
 
-        public void EditAbilities(Abilities ability)
+        public void EditAbilities(Abilities ability, string name)
         {
-            if (ability == null || ability.Name == null)
+            if (ability == null || ability.Name == null || name == null)
             {
                 throw new BadRequestException("Ability require a name.");
             }
-            Abilities abilityExist = _repository.GetAbilitiesByName(ability.Name);
-            if (ability == null)
+            if (!_repository.AbilityExist(name))
             {
                 throw new NotFoundException($"Ability with name {ability.Name} not found.");
-
             }
             try
             {
-                abilityExist.Name = ability.Name;
-                abilityExist.EffectDescription = ability.EffectDescription;
-                abilityExist.IsHidden = ability.IsHidden;
-                _repository.DeleteAbilities(abilityExist);
+                _repository.EditAbilities(ability, name);
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex);
                 throw new BusinessException(ex.Message);
-
             }
         }
 
@@ -70,7 +62,12 @@ namespace api_de_pokemon.Services.Implementation
 
         public Abilities GetAbilitiesByName(string name)
         {
-            return _repository.GetAbilitiesByName(name);
+            var ability = _repository.GetAbilitiesByName(name);
+            if (ability == null)
+            {
+                throw new NotFoundException($"Ability with name {name} not found.");
+            }
+            return ability;
         }
 
         public void InsertAbilities(Abilities ability)
@@ -79,8 +76,7 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new BadRequestException("Ability require a name.");
             }
-            Abilities typeExist = _repository.GetAbilitiesByName(ability.Name);
-            if (typeExist != null)
+            if (_repository.AbilityExist(ability.Name))
             {
                 throw new AlreadyExistException($"Ability with name {ability.Name} already exist.");
             }

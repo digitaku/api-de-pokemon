@@ -10,7 +10,7 @@ namespace api_de_pokemon.Services
         IEnumerable<Pokemon> GetPokemonsByTypes(string name);
         Pokemon GetPokemonByName(string name);
         void InsertPokemon(Pokemon pokemon);
-        void EditPokemon(Pokemon pokemon);
+        void EditPokemon(Pokemon pokemon, string name);
         void DeletePokemon(string name);
     }
 }

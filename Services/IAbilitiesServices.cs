@@ -8,7 +8,7 @@ namespace api_de_pokemon.Services
         IEnumerable<Abilities> GetAbilities();
         Abilities GetAbilitiesByName(string name);
         void InsertAbilities(Abilities abilities);
-        void EditAbilities(Abilities abilities);
+        void EditAbilities(Abilities abilities, string name);
         void DeleteAbilities(string name);
     }
 }

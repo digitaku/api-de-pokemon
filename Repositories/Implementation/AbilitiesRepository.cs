@@ -37,11 +37,14 @@ namespace api_de_pokemon.Repositories.Implementation
             }
         }
 
-        public void EditAbilities(Abilities ability)
+        public void EditAbilities(Abilities ability, string name)
         {
             try
             {
-                _db.Abilities.Update(ability);
+                var abilityExist = _db.Abilities.Where(ability => ability.Name == name).FirstOrDefault();
+                abilityExist.Name = ability.Name;
+                abilityExist.IsHidden = ability.IsHidden;
+                abilityExist.EffectDescription = ability.EffectDescription;
                 _db.SaveChanges();
             }
             catch (Exception ex)
@@ -64,6 +67,10 @@ namespace api_de_pokemon.Repositories.Implementation
                 System.Console.WriteLine(ex);
                 throw ex;
             }
+        }
+        public bool AbilityExist(string name)
+        {
+            return _db.Abilities.Where(type => type.Name == name).AsNoTracking().FirstOrDefault() != null;
         }
     }
 }
