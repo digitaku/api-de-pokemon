@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using api_de_pokemon.Dto;
 using api_de_pokemon.Entities;
 using api_de_pokemon.Exceptions;
 using api_de_pokemon.Repositories;
+using AutoMapper;
 
 namespace api_de_pokemon.Services.Implementation
 {
     public class AbilitiesServices : IAbilitiesServices
     {
         private readonly IAbilitiesRepository _repository;
-
         public AbilitiesServices(IAbilitiesRepository repository)
         {
             this._repository = repository;

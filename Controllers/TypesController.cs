@@ -1,7 +1,9 @@
+using api_de_pokemon.Dto;
 using api_de_pokemon.Entities;
 using api_de_pokemon.Exceptions;
 using api_de_pokemon.Services;
 using api_de_pokemon.Services.Implementation;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,16 +18,18 @@ namespace api_de_pokemon.Controllers
     public class TypesController : ControllerBase
     {
         private readonly ITypesServices _services;
-        public TypesController(ITypesServices services)
+        private readonly IMapper _mapper;
+        public TypesController(ITypesServices services, IMapper mapper)
         {
             this._services = services;
+            this._mapper = mapper;
         }
         [HttpGet]
         public IActionResult GetTypes()
         {
             try
             {
-                return Ok(_services.GetTypes());
+                return Ok(_mapper.Map<ICollection<TypesDto>>(_services.GetTypes()));
             }
             catch (Exception ex)
             {
@@ -38,7 +42,7 @@ namespace api_de_pokemon.Controllers
         {
             try
             {
-                return Ok(_services.GetTypesByName(name));
+                return Ok(_mapper.Map<TypesDto>(_services.GetTypesByName(name)));
             }
             catch (NotFoundException ex)
             {
@@ -50,11 +54,11 @@ namespace api_de_pokemon.Controllers
             }
         }
         [HttpPost]
-        public IActionResult CreateType([FromBody] Types type)
+        public IActionResult CreateType([FromBody] TypesDto type)
         {
             try
             {
-                _services.InsertTypes(type);
+                _services.InsertTypes(_mapper.Map<Types>(type));
                 return Created("Success", type);
             }
             catch (BadRequestException ex)
@@ -71,11 +75,11 @@ namespace api_de_pokemon.Controllers
             }
         }
         [HttpPut("{name}")]
-        public IActionResult EditType([FromBody] Types type, string name)
+        public IActionResult EditType([FromBody] TypesDto type, string name)
         {
             try
             {
-                _services.EditTypes(type, name);
+                _services.EditTypes(_mapper.Map<Types>(type), name);
                 return Ok(type);
             }
             catch (BadRequestException ex)

@@ -1,13 +1,9 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace api_de_pokemon.Entities
+namespace api_de_pokemon.Dto
 {
-    public class Pokemon
+    public class PokemonDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Alias { get; set; }
         public string Description { get; set; }
@@ -16,7 +12,7 @@ namespace api_de_pokemon.Entities
         public string Height { get; set; }
         public string Weight { get; set; }
         //Many TO Many
-        public ICollection<Abilities> Abilities { get; set; }
-        public ICollection<Types> Types { get; set; }
+        public ICollection<AbilitiesDto> Abilities { get; set; }
+        public ICollection<TypesDto> Types { get; set; }
     }
 }

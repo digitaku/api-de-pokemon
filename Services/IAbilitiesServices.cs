@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using api_de_pokemon.Dto;
 using api_de_pokemon.Entities;
 
 namespace api_de_pokemon.Services

@@ -1,6 +1,8 @@
+using api_de_pokemon.Dto;
 using api_de_pokemon.Entities;
 using api_de_pokemon.Exceptions;
 using api_de_pokemon.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,16 +17,18 @@ namespace api_de_pokemon.Controllers
     public class AbilitiesController : ControllerBase
     {
         private readonly IAbilitiesServices _services;
-        public AbilitiesController(IAbilitiesServices services)
+        private readonly IMapper _mapper;
+        public AbilitiesController(IAbilitiesServices services, IMapper mapper)
         {
             this._services = services;
+            this._mapper = mapper;
         }
         [HttpGet("{name}")]
         public IActionResult GetAbilitiesByName(string name)
         {
             try
             {
-                return Ok(_services.GetAbilitiesByName(name));
+                return Ok(_mapper.Map<AbilitiesDto>(_services.GetAbilitiesByName(name)));
             }
             catch (NotFoundException ex)
             {
@@ -40,7 +44,7 @@ namespace api_de_pokemon.Controllers
         {
             try
             {
-                return Ok(_services.GetAbilities());
+                return Ok(_mapper.Map<ICollection<AbilitiesDto>>(_services.GetAbilities()));
             }
             catch (Exception ex)
             {
@@ -48,11 +52,11 @@ namespace api_de_pokemon.Controllers
             }
         }
         [HttpPost]
-        public IActionResult CreateAbility([FromBody] Abilities ability)
+        public IActionResult CreateAbility([FromBody] AbilitiesDto ability)
         {
             try
             {
-                _services.InsertAbilities(ability);
+                _services.InsertAbilities(_mapper.Map<Abilities>(ability));
                 return Created("", ability);
             }
             catch (BadRequestException ex)
@@ -69,11 +73,11 @@ namespace api_de_pokemon.Controllers
             }
         }
         [HttpPut("{name}")]
-        public IActionResult EditAbility([FromBody] Abilities ability, string name)
+        public IActionResult EditAbility([FromBody] AbilitiesDto ability, string name)
         {
             try
             {
-                _services.EditAbilities(ability, name);
+                _services.EditAbilities(_mapper.Map<Abilities>(ability), name);
                 return Ok(ability);
             }
             catch (BadRequestException ex)

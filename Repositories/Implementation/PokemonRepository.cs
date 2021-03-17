@@ -19,7 +19,9 @@ namespace api_de_pokemon.Repositories.Implementation
         {
             return _db.Pokemons.
             Include(pokemon => pokemon.Abilities)
+            .IgnoreAutoIncludes()
             .Include(pokemon => pokemon.Types)
+            .IgnoreAutoIncludes()
             .AsNoTracking();
         }
         public Pokemon GetPokemonByName(string name)

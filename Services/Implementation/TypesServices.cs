@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using api_de_pokemon.Entities;
 using api_de_pokemon.Repositories;
 using api_de_pokemon.Exceptions;
+using AutoMapper;
 
 namespace api_de_pokemon.Services.Implementation
 {
