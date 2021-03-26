@@ -7,6 +7,6 @@ namespace api_de_pokemon.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
-        public IEnumerable<Pokemon> Pokemons { get; set; }
+        public ICollection<Pokemon> Pokemons { get; set; }
     }
 }

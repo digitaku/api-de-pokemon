@@ -80,6 +80,7 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new NotFoundException($"Pokemon with name {pokemon.Name} not found.");
             }
+            //verificar se os tipos e habilidades existem
             try
             {
                 _repository.EditPokemon(pokemon, name);
@@ -100,6 +101,7 @@ namespace api_de_pokemon.Services.Implementation
             {
                 throw new AlreadyExistException($"Pokemon with name {pokemon.Name} already exist.");
             }
+            //verificar se os tipos e habilidades existem
             try
             {
                 _repository.InsertPokemon(pokemon);

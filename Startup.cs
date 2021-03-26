@@ -32,7 +32,11 @@ namespace api_de_pokemon
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<ContextDb>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConn")));
+            {
+                options.EnableSensitiveDataLogging(true);
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConn"));
+            }
+            );
             services.AddControllers();
             services.AddTransient<ITypesRepository, TypesRepository>();
             services.AddTransient<IAbilitiesRepository, AbilitiesRepository>();

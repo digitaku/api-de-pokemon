@@ -8,6 +8,6 @@ namespace api_de_pokemon.Entities
         public string Name { get; set; }
         public string EffectDescription { get; set; }
         public bool IsHidden { get; set; }
-        public IEnumerable<Pokemon> Pokemons { get; set; }
+        public ICollection<Pokemon> Pokemons { get; set; }
     }
 }
